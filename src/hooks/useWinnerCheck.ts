@@ -1,4 +1,4 @@
-import { BoardState, Player } from '../types/game';
+import type { BoardState, Player } from '../types/game';
 
 const directions = [
     [1, 0],

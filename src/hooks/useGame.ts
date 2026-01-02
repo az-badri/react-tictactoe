@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BoardState, Player } from '../types/game';
+import type { BoardState, Player } from '../types/game';
 
 export function useGame() {
     const [moves, setMoves] = useState<BoardState>({});
