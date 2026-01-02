@@ -11,6 +11,7 @@ export function GamePage() {
     const [winLine, setWinLine] = useState<{ x: number; y: number }[]>();
 
     const handleMove = (x: number, y: number) => {
+        if (winner) return;
         makeMove(x, y);
 
         const result = checkWinner(moves, x, y, currentPlayer);
@@ -20,9 +21,21 @@ export function GamePage() {
         }
     };
 
+
+
+
     return (
         <Stack spacing={2} alignItems="center">
-            <Alert severity={winner ? 'success' : 'info'}>
+            <Alert
+                severity={winner ? 'success' : 'info'}
+                sx={{
+                    animation: 'fadeIn 0.3s ease',
+                    '@keyframes fadeIn': {
+                        from: { opacity: 0, transform: 'translateY(-4px)' },
+                        to: { opacity: 1, transform: 'translateY(0)' },
+                    },
+                }}
+            >
                 {winner ? `Победил ${winner}` : `Ход игрока ${currentPlayer}`}
             </Alert>
 

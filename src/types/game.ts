@@ -1,10 +1,5 @@
 export type Player = 'X' | 'O';
 
-export type CellCoords = {
-    x: number;
-    y: number;
-};
-
 export type BoardState = Record<string, Player>;
 
 export type Match = {
@@ -14,4 +9,5 @@ export type Match = {
     winner: Player | null;
     date: string;
     moves: BoardState;
+    winLine?: { x: number; y: number }[];
 };
