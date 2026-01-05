@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { Player } from '../types/game';
+import type { Player } from '../types/game';
 
 type CellProps = {
     value?: Player;
