@@ -2,7 +2,7 @@ const DIRS = [
   [1,0],[0,1],[1,1],[1,-1]
 ];
 
-export function checkWinner(board: Map<string,'X'|'O'>, x:number, y:number, p:'X'|'O') {
+export const checkWinner = (board: Map<string,'X'|'O'>, x:number, y:number, p:'X'|'O') => {
   for (const [dx,dy] of DIRS) {
     let line = [`${x}:${y}`];
     for (const dir of [-1,1]) {

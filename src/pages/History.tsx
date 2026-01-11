@@ -2,7 +2,7 @@ import { loadMatches } from '../shared/storage';
 import { Button, Box, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-export default function History(){
+export const History = () => {
   const m=loadMatches();
   if (!Array.isArray(m) || m.length === 0) {
     return (
