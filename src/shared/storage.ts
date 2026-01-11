@@ -14,15 +14,13 @@ export function loadMatches(): Match[] {
     const data = localStorage.getItem(KEY);
     if (!data) return [];
     const parsed = JSON.parse(data);
-    // Ensure it's an array
     return Array.isArray(parsed) ? parsed : [];
   } catch (error) {
     console.error('Error loading matches from localStorage:', error);
-    // Return empty array if corrupted, and clear corrupted data
     try {
       localStorage.removeItem(KEY);
-    } catch (e) {
-      // Ignore errors when clearing
+    } catch (err) {
+      console.error('Error!', err);
     }
     return [];
   }
@@ -32,7 +30,6 @@ export function saveMatch(match: Match) {
   try {
     const all = loadMatches();
     if (!Array.isArray(all)) {
-      // If loadMatches returned something unexpected, start fresh
       localStorage.setItem(KEY, JSON.stringify([match]));
       return;
     }
@@ -40,7 +37,6 @@ export function saveMatch(match: Match) {
     localStorage.setItem(KEY, JSON.stringify(all));
   } catch (error) {
     console.error('Error saving match to localStorage:', error);
-    // Try to save just this match if the array is corrupted
     try {
       localStorage.setItem(KEY, JSON.stringify([match]));
     } catch (e) {
