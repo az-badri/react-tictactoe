@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, Typography, Button, Stack, Alert } from '@mui/material';
 import { useLocation, Navigate, useNavigate, Link } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
@@ -10,8 +11,8 @@ const MIN_VIEWPORT = 5;
 
 type Player = 'X' | 'O';
 
-export default function Game() {
-  const { state } = useLocation() as any;
+export const Game = () => {
+  const { state } = useLocation();
   const nav = useNavigate();
 
   const [board, setBoard] = useState<Map<string, Player>>(new Map());
@@ -71,7 +72,7 @@ export default function Game() {
       return;
     }
 
-    setTurn(t => (t === 'X' ? 'O' : 'X'));
+    setTurn(player => (player === 'X' ? 'O' : 'X'));
   };
 
   const onMouseDown = (e: React.MouseEvent) => {
@@ -96,29 +97,38 @@ export default function Game() {
   const startX = Math.floor(-camera.x / CELL_SIZE) - BUFFER;
   const startY = Math.floor(-camera.y / CELL_SIZE) - BUFFER;
 
+  const HeaderInfo = () => <Box p={2}>
+    <Stack direction="row" justifyContent="space-between">
+      <Box>
+        <Typography>
+          {state.x} (X) vs {state.o} (O)
+        </Typography>
+        <Typography>
+          {winner
+              ? `Winner: ${winner === 'X' ? state.x : state.o}`
+              : `Turn: ${turn === 'X' ? state.x : state.o}`}
+        </Typography>
+      </Box>
+
+      <Stack direction="row" spacing={1}>
+        <Button component={Link} to="/history" size="small">History</Button>
+        <Button component={Link} to="/stats" size="small">Stats</Button>
+        <Button onClick={() => nav('/login')} size="small">New game</Button>
+      </Stack>
+    </Stack>
+  </Box>
+
+  const AttentionField = () => (
+    <Box margin='10px'>
+      <Alert severity="info">
+        Поле бесконечное, используйте мышь для перемещения по его территории
+      </Alert>
+    </Box>
+  )
+
   return (
       <Box height="100vh" display="flex" flexDirection="column">
-        <Box p={2}>
-          <Stack direction="row" justifyContent="space-between">
-            <Box>
-              <Typography>
-                {state.x} (X) vs {state.o} (O)
-              </Typography>
-              <Typography>
-                {winner
-                    ? `Winner: ${winner === 'X' ? state.x : state.o}`
-                    : `Turn: ${turn === 'X' ? state.x : state.o}`}
-              </Typography>
-            </Box>
-
-            <Stack direction="row" spacing={1}>
-              <Button component={Link} to="/history" size="small">History</Button>
-              <Button component={Link} to="/stats" size="small">Stats</Button>
-              <Button onClick={() => nav('/login')} size="small">New game</Button>
-            </Stack>
-          </Stack>
-        </Box>
-
+        <HeaderInfo />
         <Box
             ref={containerRef}
             flex={1}
@@ -129,11 +139,7 @@ export default function Game() {
             onMouseUp={onMouseUp}
             sx={{ cursor: 'grab', userSelect: 'none' }}
         >
-          <Box margin='10px'>
-            <Alert severity="info">
-              Поле бесконечное, используйте мышь для перемещения по его территории
-            </Alert>
-          </Box>
+          <AttentionField />
           <Box
               sx={{
                 display: 'grid',
@@ -176,3 +182,5 @@ export default function Game() {
       </Box>
   );
 }
+
+export default Game;
