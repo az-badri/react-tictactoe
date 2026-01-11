@@ -1,73 +1,159 @@
-# React + TypeScript + Vite
+# ♾️ Infinite Tic-Tac-Toe (5 in a Row)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Полноценное приложение на **React + TypeScript**: игра «Крестики-нолики 5 в ряд» на **бесконечном поле** с логином игроков, историей матчей и статистикой.
 
-Currently, two official plugins are available:
+Проект реализован с упором на **архитектуру, производительность и UX**, на уровне middle+/senior frontend.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Возможности
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🎮 Игра
 
-## Expanding the ESLint configuration
+* Бесконечное игровое поле (infinite board)
+* Ходы двух игроков: **X** и **O**
+* Победа при **5 одинаковых символах подряд**:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+    * по горизонтали
+    * по вертикали
+    * по диагоналям
+* Подсветка победной линии
+* Drag & pan поля мышью (как Google Maps)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 👤 Логин
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+* Ввод имён двух игроков
+* Передача данных между страницами через роутинг
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 📜 История матчей
+
+* Список сыгранных матчей
+* Дата, игроки, победитель
+* Просмотр финального состояния поля (read-only)
+
+### 📊 Статистика
+
+* Количество игр
+* Победы / поражения
+* Подсчёт на основе истории матчей
+
+### 💾 Хранение данных
+
+* LocalStorage
+* История матчей и статистика сохраняются между перезагрузками
+
+---
+
+## 🧠 Ключевые архитектурные решения
+
+### Infinite Board
+
+* Поле **не хранится как массив**
+* Используется структура:
+
+  ```ts
+  Map<string, 'X' | 'O'>
+  // key = "x:y"
+  ```
+* Память используется **только под сделанные ходы**
+
+### Камера вместо сдвига поля
+
+* Поле логически бесконечно
+* Двигается **камера в пикселях**, а не клетки
+* Рендерится только видимая область + buffer
+
+### Проверка победы
+
+* Проверка идёт **только от последнего хода**
+* 4 направления × 2 стороны
+* O(1) по времени
+
+---
+
+## 🧩 Стек технологий
+
+* **React 18**
+* **TypeScript**
+* **React Router v6**
+* **MUI (Material UI)**
+* **LocalStorage**
+* HTML5 / CSS3
+
+Без сторонних state-менеджеров.
+
+---
+
+## 📂 Структура проекта
+
+```
+src/
+ ├── pages/
+ │    ├── Login.tsx      # Ввод имён игроков
+ │    ├── Game.tsx       # Основная игра (infinite board)
+ │    ├── History.tsx    # История матчей
+ │    └── Stats.tsx      # Статистика
+ │
+ ├── shared/
+ │    ├── checkWinner.ts # Логика проверки победы
+ │    └── storage.ts     # Работа с LocalStorage
+ │
+ ├── App.tsx             # Роутинг
+ └── main.tsx            # Точка входа
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🛠 Установка и запуск
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 2️⃣ Установить зависимости
+
+```bash
+npm install
 ```
+
+### 3️⃣ Запустить в dev-режиме
+
+```bash
+npm run dev
+```
+
+Открой в браузере:
+
+```
+http://localhost:5173
+```
+
+### 4️⃣ Сборка production
+
+```bash
+npm run build
+```
+
+---
+
+## 🧪 Как играть
+
+1. Введите имена двух игроков
+2. Начните матч
+3. Делайте ходы, кликая по клеткам
+4. Перетаскивайте поле мышью для перемещения
+5. Победа автоматически определяется при 5 в ряд
+6. Результат сохраняется в истории
+
+---
+
+## 🎯 Цель проекта
+
+Проект задуман как:
+
+* тестовое задание уровня middle+/senior
+* демонстрация архитектурного мышления
+* база для дальнейшего развития
+
+---
+
+## ✅ Финальный результат 
+показан на скрине ниже:
+
+![result.png](assets/result.png)
