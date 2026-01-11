@@ -84,26 +84,6 @@
 
 ---
 
-## 📂 Структура проекта
-
-```
-src/
- ├── pages/
- │    ├── Login.tsx      # Ввод имён игроков
- │    ├── Game.tsx       # Основная игра (infinite board)
- │    ├── History.tsx    # История матчей
- │    └── Stats.tsx      # Статистика
- │
- ├── shared/
- │    ├── checkWinner.ts # Логика проверки победы
- │    └── storage.ts     # Работа с LocalStorage
- │
- ├── App.tsx             # Роутинг
- └── main.tsx            # Точка входа
-```
-
----
-
 ## 🛠 Установка и запуск
 
 ### 2️⃣ Установить зависимости
@@ -156,4 +136,4 @@ npm run build
 ## ✅ Финальный результат 
 показан на скрине ниже:
 
-![result.png](assets/result.png)
+![result.png](assets/images/result.png)
